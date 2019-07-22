@@ -30,7 +30,7 @@ def main():
 
     # Declaring variables
     counter = 0
-    bin_counter = bin(counter)
+    bin_counter = bin(counter) + "00000"
 
     # Main while loop
     while(True):
@@ -45,7 +45,7 @@ def main():
                 counter = 8
 
         # Translate int to binary representation
-        bin_counter = bin(counter)
+        bin_counter = bin(counter) + "00000"
 
         if bin_counter[2] == '1':
             GPIO.output(21, GPIO.HIGH)
@@ -79,6 +79,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Exiting gracefully")
         # Turn off your GPIOs here
-        GPIO.cleanup()
-    except e:
         GPIO.cleanup()
