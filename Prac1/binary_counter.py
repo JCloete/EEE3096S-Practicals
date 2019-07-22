@@ -21,6 +21,8 @@ def main():
     GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(20, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(16, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # Main while loop
     while(True):
