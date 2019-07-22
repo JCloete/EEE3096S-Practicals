@@ -15,12 +15,23 @@ import time
 
 # Logic that you write
 def main():
-	GPIO.setmode(GPIO.BCM)
-	GPIO.setup(21, GPIO.OUT)
-	GPIO.output(21, GPIO.HIGH)
-	time.sleep(10)
-	GPIO.output(21, GPIO.LOW)
-	time.sleep(5)
+	GPIO.setmode(GPIO.BCM) #Setting up the GPIO
+
+    # Setup GPIO pins
+	GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(20, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(16, GPIO.OUT, initial=GPIO.LOW)
+
+    # Main while loop
+    while(True):
+        GPIO.output(16, GPIO.LOW)
+        GPIO.output(20, GPIO.HIGH)
+        GPIO.output(21, GPIO.HIGH)
+        time.sleep(5)
+        GPIO.output(16, GPIO.High)
+        GPIO.output(20, GPIO.LOW)
+        GPIO.output(21, GPIO.LOW)
+        time.sleep(5)
 
 
 # Only run the functions if 
