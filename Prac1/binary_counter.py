@@ -25,8 +25,8 @@ def main():
     GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # Setting up input events
-    GPIO.add_event_detect(5, GPIO.FALLING)
-    GPIO.add_event_detect(6, GPIO.FALLING)
+    #GPIO.add_event_detect(5, GPIO.FALLING)
+    #GPIO.add_event_detect(6, GPIO.FALLING)
 
     # Declaring variables
     counter = 0
@@ -34,39 +34,36 @@ def main():
 
     # Main while loop
     while(True):
-        if GPIO.event_detected(5):
-            counter += 1
-            if counter > 8:
-                counter = 0
 
-        if GPIO.event_detected(6):
-            counter -= 1
-            if counter < 0:
-                counter = 8
+        #if GPIO.event_detected(5):
+         #   counter += 1
+          #  if counter > 8:
+           #     counter = 0
+
+        #if GPIO.event_detected(6):
+         #   counter -= 1
+          #  if counter < 0:
+           #     counter = 8
+
+        GPIO.wait_for_edge(6, GPIO.FALLING)
 
         # Translate int to binary representation
         bin_counter = bin(counter) + "00000"
 
         if bin_counter[2] == '1':
             GPIO.output(21, GPIO.HIGH)
-            time.sleep(0.1)
         else:
             GPIO.output(21, GPIO.LOW)
-            time.sleep(0.1)
 
         if bin_counter[3] == '1':
             GPIO.output(20, GPIO.HIGH)
-            time.sleep(0.1)
         else:
             GPIO.output(20, GPIO.LOW)
-            time.sleep(0.1)
 
         if bin_counter[4] == '1':
             GPIO.output(16, GPIO.HIGH)
-            time.sleep(0.1)
         else:
             GPIO.output(16, GPIO.LOW)
-            time.sleep(0.1)
 
 
 
