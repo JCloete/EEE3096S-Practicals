@@ -24,16 +24,50 @@ def main():
     GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+    # Setting up input events
+    GPIO.add_event_detect(5, GPIO.FALLING, bouncetime=200)
+    GPIO.add_event_detect(6, GPIO.FALLING, bouncetime=200)
+
+    # Declaring variables
+    counter = 0
+    bin_counter = bin(counter)
+
     # Main while loop
     while(True):
-        GPIO.output(16, GPIO.LOW)
-        GPIO.output(20, GPIO.HIGH)
-        GPIO.output(21, GPIO.HIGH)
-        time.sleep(5)
-        GPIO.output(16, GPIO.HIGH)
-        GPIO.output(20, GPIO.LOW)
-        GPIO.output(21, GPIO.LOW)
-        time.sleep(5)
+        if GPIO.event_detected(5):
+            counter += 1
+            if counter > 8:
+                counter = 0
+
+        if GPIO.event_detected(6):
+            counter -= 1
+            if counter < 0:
+                counter = 8
+
+        # Translate int to binary representation
+        bin_counter = bin(counter)
+
+        if bin_counter[2] == '1':
+            GPIO.output(21, GPIO.HIGH)
+            time.sleep(0.1)
+        else:
+            GPIO.output(21, GPIO.LOW)
+            time.sleep(0.1)
+
+        if bin_counter[3] == '1':
+            GPIO.output(20, GPIO.HIGH)
+            time.sleep(0.1)
+        else:
+            GPIO.output(20, GPIO.LOW)
+            time.sleep(0.1)
+
+        if bin_counter[4] == '1':
+            GPIO.output(16, GPIO.HIGH)
+            time.sleep(0.1)
+        else:
+            GPIO.output(16, GPIO.LOW)
+            time.sleep(0.1)
+
 
 
 # Only run the functions if 
