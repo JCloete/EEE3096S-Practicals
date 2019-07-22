@@ -25,8 +25,8 @@ def main():
     GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # Setting up input events
-    GPIO.add_event_detect(5, GPIO.FALLING, bouncetime=200)
-    GPIO.add_event_detect(6, GPIO.FALLING, bouncetime=200)
+    GPIO.add_event_detect(5, GPIO.FALLING)
+    GPIO.add_event_detect(6, GPIO.FALLING)
 
     # Declaring variables
     counter = 0
