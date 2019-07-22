@@ -45,4 +45,4 @@ if __name__ == "__main__":
         # Turn off your GPIOs here
         GPIO.cleanup()
     except e:
-	GPIO.cleanup()
+        GPIO.cleanup()
