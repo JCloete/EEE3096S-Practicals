@@ -13,16 +13,20 @@ Date: 22/07/2019
 import RPi.GPIO as GPIO
 import time
 
+# Global counter variable to be used in callback_one and two
+counter = 0
 
 #Callbacks
-def increase_counter(5):
+def my_callback_one(channel):
+    global counter
     # Increase counter
     if counter < 7:
         counter += 1
     else:
         counter = 0
 
-def decrease_counter(6):
+def my_callback_two(channel):
+    global counter
     # Decrease counter
     if counter > 0:
         counter -= 1
@@ -42,11 +46,10 @@ def main():
     GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # Setting up input events
-    GPIO.add_event_detect(6, GPIO.FALLING, callback=increase_counter, bouncetime=200)
-    GPIO.add_event_detect(5, GPIO.FALLING, callback=decrease_counter, bouncetime=200)
+    GPIO.add_event_detect(6, GPIO.FALLING, callback=my_callback_one, bouncetime=200)
+    GPIO.add_event_detect(5, GPIO.FALLING, callback=my_callback_two, bouncetime=200)
 
     # Declaring variables
-    counter = 0
     bin_counter = bin(counter) + "000"
 
     # Main while loop
@@ -96,5 +99,6 @@ if __name__ == "__main__":
         GPIO.cleanup()
     except Exception as e:
         print("An error occured")
+        print(e)
         # Turn off GPIOs
         GPIO.cleanup()
