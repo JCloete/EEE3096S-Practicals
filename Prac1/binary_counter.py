@@ -13,21 +13,22 @@ Date: 22/07/2019
 import RPi.GPIO as GPIO
 import time
 
-# Global counter variable to be used in callback_one and two
+# Global counter variable to be used in callbacks
 counter = 0
 
-#Callbacks
-def my_callback_one(channel):
-    global counter
-    # Increase counter
+# Callback to increase counter by 1
+def increase_counter(channel):
+    global counter  # global flag to allow counter variable to be adjusted
+    
     if counter < 7:
         counter += 1
     else:
         counter = 0
 
-def my_callback_two(channel):
-    global counter
-    # Decrease counter
+# Callback to decrease counter by 1
+def decrease_counter(channel):
+    global counter  # global flag to allow counter variable to be adjusted
+    
     if counter > 0:
         counter -= 1
     else:
@@ -36,7 +37,9 @@ def my_callback_two(channel):
 
 # Logic that you write
 def main():
-    GPIO.setmode(GPIO.BCM) #Setting up the GPIO
+
+    #Setting up the GPIO
+    GPIO.setmode(GPIO.BCM) 
 
     # Setup GPIO pins
     GPIO.setup(21, GPIO.OUT, initial=GPIO.LOW)
@@ -46,11 +49,8 @@ def main():
     GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # Setting up input events
-    GPIO.add_event_detect(6, GPIO.FALLING, callback=my_callback_one, bouncetime=200)
-    GPIO.add_event_detect(5, GPIO.FALLING, callback=my_callback_two, bouncetime=200)
-
-    # Declaring variables
-    bin_counter = bin(counter) + "000"
+    GPIO.add_event_detect(6, GPIO.FALLING, callback=increase_counter, bouncetime=200)
+    GPIO.add_event_detect(5, GPIO.FALLING, callback=decrease_counter, bouncetime=200)
 
     # Main while loop
     while(True):
@@ -79,7 +79,7 @@ def main():
         else:
             GPIO.output(21, GPIO.LOW)
 
-        time.sleep(0.1) # To ensure the pins transistion properly
+        time.sleep(0.05) # To ensure the pins transistion properly
 
 
 
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         # Turn off your GPIOs here
         GPIO.cleanup()
     except Exception as e:
-        print("An error occured")
+        print("An unusual error occured:")
         print(e)
         # Turn off GPIOs
         GPIO.cleanup()
