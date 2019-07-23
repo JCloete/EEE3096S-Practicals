@@ -1,3 +1,6 @@
-## This is the repository for all EEE3096S pracs in 2019 for CLTJAS004.
+## EEE3096S - Embedded Systems II
 
-Hi
+# By: Jason Cloete - CLTJAS004
+
+Practicals for the course EEE3096S
+All code developed for the Raspberry Pi 3 B+ as issued by UCT
