@@ -13,6 +13,23 @@ Date: 22/07/2019
 import RPi.GPIO as GPIO
 import time
 
+
+#Callbacks
+def increase_counter(5):
+    # Increase counter
+    if counter < 7:
+        counter += 1
+    else:
+        counter = 0
+
+def decrease_counter(6):
+    # Decrease counter
+    if counter > 0:
+        counter -= 1
+    else:
+        counter = 7
+
+
 # Logic that you write
 def main():
     GPIO.setmode(GPIO.BCM) #Setting up the GPIO
@@ -25,45 +42,45 @@ def main():
     GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # Setting up input events
-    #GPIO.add_event_detect(5, GPIO.FALLING)
-    #GPIO.add_event_detect(6, GPIO.FALLING)
+    GPIO.add_event_detect(6, GPIO.FALLING, callback=increase_counter, bouncetime=200)
+    GPIO.add_event_detect(5, GPIO.FALLING, callback=decrease_counter, bouncetime=200)
 
     # Declaring variables
     counter = 0
-    bin_counter = bin(counter) + "00000"
+    bin_counter = bin(counter) + "000"
 
     # Main while loop
     while(True):
-
-        #if GPIO.event_detected(5):
-         #   counter += 1
-          #  if counter > 8:
-           #     counter = 0
-
-        #if GPIO.event_detected(6):
-         #   counter -= 1
-          #  if counter < 0:
-           #     counter = 8
-
-        GPIO.wait_for_edge(6, GPIO.FALLING)
-
         # Translate int to binary representation
-        bin_counter = bin(counter) + "00000"
+        bin_counter = "00" + bin(counter)[2:]  # leading zeroes ensure that the array index is never out of bounds
 
-        if bin_counter[2] == '1':
-            GPIO.output(21, GPIO.HIGH)
+        # [-1] is the least significant bit i.e 2^0....... [-2] 2^1....... [-3] 2^2
+        # HIGHEST POSSIBLE NUMBER IS 7
+
+        # Following statements check whether bit they represent is 1 or 0 and turn on accordingly
+        # LSB
+        if bin_counter[-1] == '1':
+            GPIO.output(16, GPIO.HIGH)
         else:
-            GPIO.output(21, GPIO.LOW)
+            GPIO.output(16, GPIO.LOW)
 
-        if bin_counter[3] == '1':
+        # Middle Bit
+        if bin_counter[-2] == '1':
             GPIO.output(20, GPIO.HIGH)
         else:
             GPIO.output(20, GPIO.LOW)
 
-        if bin_counter[4] == '1':
-            GPIO.output(16, GPIO.HIGH)
+        # MSB
+        if bin_counter[-3] == '1':
+            GPIO.output(21, GPIO.HIGH)
         else:
-            GPIO.output(16, GPIO.LOW)
+            GPIO.output(21, GPIO.LOW)
+
+        time.sleep(0.1) # To ensure the pins transistion properly
+
+
+
+
 
 
 
@@ -76,4 +93,8 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Exiting gracefully")
         # Turn off your GPIOs here
+        GPIO.cleanup()
+    except Exception as e:
+        print("An error occured")
+        # Turn off GPIOs
         GPIO.cleanup()
